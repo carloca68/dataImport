@@ -43,7 +43,7 @@ import javax.persistence.*;
  * The type Demographic info.
  */
 
-@Entity(name = "INFO")
+@Entity(name = "INFO_OLAP")
 public class DemographicInfo {
 
     @Id

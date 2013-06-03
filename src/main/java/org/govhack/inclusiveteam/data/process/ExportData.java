@@ -37,12 +37,19 @@
 
 package org.govhack.inclusiveteam.data.process;
 
+import com.bbn.openmap.geo.GeoPoint;
+import org.govhack.inclusiveteam.data.model.DemographicInfo;
 import org.govhack.inclusiveteam.data.repository.CountryRepository;
 import org.govhack.inclusiveteam.data.repository.DemographicInfoRepository;
 import org.govhack.inclusiveteam.data.repository.SourceRepository;
 import org.govhack.inclusiveteam.data.repository.StateRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ExportData
 {
@@ -52,7 +59,25 @@ public class ExportData
     private static CountryRepository countryRepository;
     private static DemographicInfoRepository infoRepository;
 
+
+    private static boolean run = true;
+
+    private GeoPoint sydney = new GeoPoint.Impl(151.0281982,-33.88977432);
+    private GeoPoint adelaide = new GeoPoint.Impl(138.8706818,-34.91853714);
+    private GeoPoint canberra = new GeoPoint.Impl(149.041626,-35.34992599);
+    private GeoPoint melbourne = new GeoPoint.Impl(145.0751038,-37.85295868);
+    private GeoPoint perth = new GeoPoint.Impl(115.9233704,-31.97586441);
+    private GeoPoint hobart = new GeoPoint.Impl(147.5,-43);
+    private GeoPoint brisbane = new GeoPoint.Impl(153.0264893,-27.45391273);
+    private GeoPoint darwin = new GeoPoint.Impl(130.9945526,-12.70149994);
+
+
     public static void main(String[] args) {
+
+        if (!run){
+            return;
+        }
+
         ApplicationContext context =
                 new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
 
@@ -61,8 +86,29 @@ public class ExportData
         countryRepository = context.getBean(CountryRepository.class);
         infoRepository = context.getBean(DemographicInfoRepository.class);
 
+        List<DemographicInfo> info = infoRepository.findBySource_YearAndState_Name(2001L, "Queensland");
+
+        Collections.sort(info, DemographicInfoValueComparator.newInstance(true));
+
+        processData(10, info);
 
 
+    }
+
+    private static void processData(int size, List<DemographicInfo> infoList) {
+        Map<String, Long> mappedData = new HashMap<String, Long>();
+        for (int i = 0; i < size; i++){
+            DemographicInfo info = infoList.get(i);
+            List<GeoPoint> points = createPoints(info);
+           // System.out.println(info.getCountry().getName() + " - " + info.getValue());
+        }
+
+
+    }
+
+    private static List<GeoPoint> createPoints(DemographicInfo info) {
+
+        return null;
     }
 
 }

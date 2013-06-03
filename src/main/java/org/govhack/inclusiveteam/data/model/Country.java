@@ -46,7 +46,7 @@ import javax.persistence.Id;
 
  * The type Country.
  */
-@Entity(name = "COUNTRY")
+@Entity(name = "COUNTRY_OLAP")
 public class Country {
 
     @Id
@@ -62,12 +62,26 @@ public class Country {
     @Column(nullable = false, length = 60)
     private String name;
 
+
+    @Column(nullable = true, length = 254)
+    private String foodTags;
+
+    /**
+     * Gets food tags.
+     *
+     * @return the food tags
+     */
+    public String getFoodTags() {
+        return foodTags;
+    }
+
     /**
      * Instantiates a new Country.
      *
      * @param name the name
      */
     public Country(String name) {
+
         this.name = name;
     }
 

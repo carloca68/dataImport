@@ -6,6 +6,8 @@
         <fileset id="fileset" name="Spring Application Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/integrationContext.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/dataContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/persistenceContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/applicationContext.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -103,6 +105,15 @@
     <orderEntry type="library" exported="" name="spring-data-commons-core-1.4.0.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="opencsv-2.3" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="mysql-connector-java-5.1.24" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/openmap.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

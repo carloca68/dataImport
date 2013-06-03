@@ -35,14 +35,44 @@
  * /
  */
 
-package org.govhack.inclusiveteam.data.repository;
+package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.model.Country;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.govhack.inclusiveteam.data.model.DemographicInfo;
+
+import java.util.Comparator;
 
 /**
- * The interface Country repository.
+ * The type Demographic info value comparator.
  */
-public interface CountryRepository extends JpaRepository<Country, Long> {
-    Country findByName(String name);
+public class DemographicInfoValueComparator implements Comparator<DemographicInfo> {
+
+    private boolean reverse = false;
+
+    public DemographicInfoValueComparator(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    @Override
+    public int compare(DemographicInfo info1, DemographicInfo info2) {
+        Long cmp = info1.getValue() - info2.getValue();
+        int result = 0;
+        if (cmp > 0L) {
+            result = 1;
+        }
+        if (cmp < 0L) {
+            result = -1;
+        }
+        if (reverse) {
+            return  result * -1;
+        }
+        return result;
+    }
+
+    public static DemographicInfoValueComparator newInstance(boolean reverse){
+        return new DemographicInfoValueComparator(reverse);
+    }
+
+    public static DemographicInfoValueComparator newInstance(){
+        return new DemographicInfoValueComparator(false);
+    }
 }

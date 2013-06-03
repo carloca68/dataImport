@@ -35,14 +35,35 @@
  * /
  */
 
-package org.govhack.inclusiveteam.data.repository;
-
-import org.govhack.inclusiveteam.data.model.Country;
-import org.springframework.data.jpa.repository.JpaRepository;
+package org.govhack.inclusiveteam.data.model;
 
 /**
- * The interface Country repository.
+ * The enum Australian states.
  */
-public interface CountryRepository extends JpaRepository<Country, Long> {
-    Country findByName(String name);
+public enum AustralianStates {
+    /**
+     * The NSW.
+     */NSW(17, "New South Wales"), /**
+     * The ACT.
+     */ACT(18, "Australian Capital Territory"), /**
+     * The NT.
+     */NT(19, "Northern Territory"), /**
+     * The SA.
+     */SA(25, "South Australia"), /**
+     * The TAS.
+     */TAS(21, "Tasmania"), /**
+     * The VIC.
+     */VIC(23, "Victoria"), /**
+     * The QLD.
+     */QLD(20, "Queensland"), /**
+     * The WA.
+     */WA(22, "Western Australia");
+
+    private int id;
+    private String name;
+
+    private AustralianStates(int id, String name) {
+        this.id = id;
+    }
+
 }

@@ -38,16 +38,8 @@
 package org.govhack.inclusiveteam.data.process;
 
 import org.govhack.inclusiveteam.data.model.Country;
-import org.govhack.inclusiveteam.data.model.DemographicInfo;
-import org.govhack.inclusiveteam.data.model.Source;
 import org.govhack.inclusiveteam.data.model.State;
-import org.govhack.inclusiveteam.data.repository.CountryRepository;
-import org.govhack.inclusiveteam.data.repository.DemographicInfoRepository;
-import org.govhack.inclusiveteam.data.repository.SourceRepository;
-import org.govhack.inclusiveteam.data.repository.StateRepository;
 import org.govhack.inclusiveteam.data.services.CSVReaderService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.FileNotFoundException;
 import java.security.InvalidParameterException;
@@ -57,12 +49,7 @@ import java.util.Set;
 /**
  * The type Import values.
  */
-public class ImportValues {
-
-    private static StateRepository stateRepository;
-    private static SourceRepository sourceRepository;
-    private static CountryRepository countryRepository;
-    private static DemographicInfoRepository infoRepository;
+public class ImportValues extends AbstractImporter {
 
     private static final String[] FILE_NAMES = {
             "./data/input/20680-b10-Australian Capital Territory (State).csv",
@@ -73,16 +60,6 @@ public class ImportValues {
             "./data/input/20680-b10-Western Australia (State).csv",
             "./data/input/20680-b10-Northern Territory (State).csv",
             "./data/input/20680-b10-Victoria (State).csv"};
-
-    private static final String[] STATE_NAMES = {
-            "Australian Capital Territory",
-            "New South Wales",
-            "Queensland",
-            "South Australia",
-            "Tasmania",
-            "Western Australia",
-            "Northern Territory",
-            "Victoria"};
 
     private static final int Y2000_INDEX = 3;
     private static final int Y2001_INDEX = 4;
@@ -98,13 +75,10 @@ public class ImportValues {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
-
-        stateRepository = context.getBean(StateRepository.class);
-        sourceRepository = context.getBean(SourceRepository.class);
-        countryRepository = context.getBean(CountryRepository.class);
-        infoRepository = context.getBean(DemographicInfoRepository.class);
+        if (!run) {
+            return;
+        }
+        initBeans();
 
         for (int stateIndex = 0; stateIndex < STATE_NAMES.length; stateIndex++) {
             State state = stateRepository.findByName(STATE_NAMES[stateIndex]);
@@ -132,13 +106,13 @@ public class ImportValues {
         Set<String> keys = data.keySet();
         for (String key : keys) {
 
-            checkSource(2000L);
-            checkSource(2001L);
-            checkSource(2002L);
-            checkSource(2003L);
-            checkSource(2004L);
-            checkSource(2005L);
-            checkSource(2006L);
+            checkSource(2000L, "Census by year");
+            checkSource(2001L, "Census by year");
+            checkSource(2002L, "Census by year");
+            checkSource(2003L, "Census by year");
+            checkSource(2004L, "Census by year");
+            checkSource(2005L, "Census by year");
+            checkSource(2006L, "Census by year");
 
             Country country = countryRepository.findByName(key);
             if (country == null) {
@@ -156,32 +130,6 @@ public class ImportValues {
 
             System.out.println(key + " - " + data.get(key));
         }
-    }
-
-    private static void processByYear(String key, State state, Long year, Long value) {
-
-        Source source = sourceRepository.findByYear(year);
-        Country country = countryRepository.findByName(key);
-        DemographicInfo info = new DemographicInfo(country, state, source, value);
-        infoRepository.save(info);
-    }
-
-    private static void checkSource(Long year) {
-        Source source = sourceRepository.findByYear(year);
-        if (source == null) {
-            source = new Source(year, "Census - " + year);
-            sourceRepository.save(source);
-        }
-    }
-
-    private static Long valueGetFromColumn(int index, String[] input) {
-        try {
-            String valueString = input[index].replace(",", "");
-            return Long.parseLong(valueString);
-        } catch (Exception ex) {
-            return 0L;
-        }
-
     }
 
 }

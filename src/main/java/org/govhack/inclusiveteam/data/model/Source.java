@@ -45,7 +45,7 @@ import javax.persistence.Id;
 /**
  * The type Source.
  */
-@Entity(name = "SOURCE")
+@Entity(name = "SOURCE_OLAP")
 public class Source {
 
     @Id

@@ -64,4 +64,11 @@ public interface LineProcessor {
      * @return the data
      */
     Map<String,String[]> getData();
+
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
+    int getSize();
 }

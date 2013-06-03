@@ -49,24 +49,28 @@ import javax.persistence.*;
  * The type State.
  */
 @Entity
-@Table(name="STATE", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+@Table(name="STATE_OLAP", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class State {
+
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false, length = 60)
-
     private String name;
+
+    @Column(nullable = false, length = 3)
+    private String abbr;
 
     /**
      * Instantiates a new State.
      *
      * @param name the name
      */
-    public State(String name) {
+    public State(String name, String abbr) {
         this.name = name;
+        this.abbr = abbr;
     }
 
     /**
@@ -94,11 +98,21 @@ public class State {
         return name;
     }
 
+    /**
+     * Gets abbr.
+     *
+     * @return the abbr
+     */
+    public String getAbbr() {
+        return abbr;
+    }
+
     @Override
     public String toString() {
         return "State{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", abbr='" + abbr + '\'' +
                 '}';
     }
 }

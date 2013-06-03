@@ -58,6 +58,11 @@ public class CensusLineProcessor implements LineProcessor {
         return data;
     }
 
+    @Override
+    public int getSize() {
+        return data.size();
+    }
+
     /**
      * Instantiates a new Census line processor.
      *

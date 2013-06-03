@@ -40,8 +40,14 @@ package org.govhack.inclusiveteam.data.repository;
 import org.govhack.inclusiveteam.data.model.DemographicInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * The interface Demographic info repository.
  */
 public interface DemographicInfoRepository extends JpaRepository<DemographicInfo, Long> {
+
+    List<DemographicInfo> findBySource_YearAndCountryName(Long year, String name);
+
+    List<DemographicInfo> findBySource_YearAndState_Name(Long year, String name);
 }

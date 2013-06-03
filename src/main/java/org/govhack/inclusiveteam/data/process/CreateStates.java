@@ -42,39 +42,48 @@ import org.govhack.inclusiveteam.data.repository.StateRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * The type Create states.
+ */
 public class CreateStates {
 
+    private static StateRepository stateRepository;
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static  void  main(String[] args)  {
         ApplicationContext context =
                 new ClassPathXmlApplicationContext(new String[] {"applicationContext.xml"});
 
-        StateRepository stateRepository = context.getBean(StateRepository.class);
+        stateRepository = context.getBean(StateRepository.class);
 
-        State nsw = new State("New South Wales");
-        stateRepository.save(nsw);
-
-        State act = new State("Australian Capital Territory ");
-        stateRepository.save(act);
-
-        State nt = new State("Northern Territory");
-        stateRepository.save(nt);
-
-        State qld = new State("Queensland");
-        stateRepository.save(qld);
-
-        State taz = new State("Tasmania");
-        stateRepository.save(taz);
-
-        State wa = new State("Western Australia");
-        stateRepository.save(wa);
-
-        State vic = new State("Victoria");
-        stateRepository.save(vic);
-
-        State sa = new State("South Australia");
-        stateRepository.save(sa);
+        checkState("New South Wales", "NSW");
+        checkState("Australian Capital Territory", "ACT");
+        checkState("Northern Territory", "NT");
+        checkState("Queensland", "QLD");
+        checkState("Tasmania", "TAS");
+        checkState("Western Australia", "WA");
+        checkState("Victoria","VIC");
+        checkState("South Australia", "SA");
 
         stateRepository.flush();
 
+    }
+
+    /**
+     * Check state.
+     *
+     * @param name the name
+     * @param abbr the abbr
+     */
+    protected static void checkState(String name, String abbr){
+        State state = stateRepository.findByName(name);
+        if (state == null) {
+          state = new State(name, abbr);
+          stateRepository.save(state);
+        }
     }
 }
