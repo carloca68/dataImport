@@ -34,30 +34,34 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.repository;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+import org.govhack.inclusiveteam.data.model.Statistics;
 
-public class CensusLineProcessorTest {
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
+/**
+ * The type Demographic info repository custom impl.
+ */
+public class DemographicInfoRepositoryImpl implements DemographicInfoRepositoryCustom {
 
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
+    @PersistenceContext
+    private javax.persistence.EntityManager em;
 
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
+    @Override
+    public List<Statistics> calculateByYear(Long year, int maxSize) {
+        Query query = em.createQuery(" select new org.govhack.inclusiveteam.data.model.Statistics(country.name, sum(info.value))" +
+                " from INFO_OLAP info, COUNTRY_OLAP country, SOURCE_OLAP source where " +
+                "        info.country = country " +
+                "        and info.source = source " +
+                "        and country.id <> 30 " +
+                "        and info.source.year = ?1 " +
+                "        group by country.name, source.year " +
+                "        order by sum(info.value) desc");
+        query.setParameter(1, year);
+        return query.setMaxResults(maxSize).getResultList();
     }
 }

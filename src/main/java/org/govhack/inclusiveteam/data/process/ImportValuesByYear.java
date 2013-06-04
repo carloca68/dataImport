@@ -38,7 +38,7 @@
 package org.govhack.inclusiveteam.data.process;
 
 import org.govhack.inclusiveteam.data.model.State;
-import org.govhack.inclusiveteam.data.services.CSVReaderService;
+import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
 
 import java.io.FileNotFoundException;
 import java.util.List;

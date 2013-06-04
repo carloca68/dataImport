@@ -34,30 +34,22 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.services.business;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+import org.govhack.inclusiveteam.data.model.Statistics;
 
-public class CensusLineProcessorTest {
+import java.util.List;
 
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
-
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
-
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
-    }
+/**
+ * The interface Business service impl.
+ */
+public interface BusinessService {
+    /**
+     * Calculate by year.
+     *
+     * @param year the year
+     * @return the list
+     */
+    List<Statistics> calculateByYear(Long year);
 }

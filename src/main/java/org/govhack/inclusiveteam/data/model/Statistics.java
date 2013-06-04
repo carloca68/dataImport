@@ -34,30 +34,44 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.model;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+/**
+ * The type Statistics.
+ */
+public class Statistics {
 
-public class CensusLineProcessorTest {
+    private String country;
 
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
+    private Long value;
 
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
+    /**
+     * Gets country.
+     *
+     * @return the country
+     */
+    public String getCountry() {
+        return country;
+    }
 
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
+    /**
+     * Gets value.
+     *
+     * @return the value
+     */
+    public Long getValue() {
+        return value;
+    }
+
+    /**
+     * Instantiates a new Statistics.
+     *
+     * @param country the country
+     * @param value the value
+     */
+    public Statistics(String country, Long value) {
+        this.country = country;
+        this.value = value;
     }
 }

@@ -34,30 +34,16 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.config;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-public class CensusLineProcessorTest {
-
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
-
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
-
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
-    }
+/**
+ * The type Web config.
+ */
+@Configuration
+@EnableWebMvc
+public class WebConfig {
 }

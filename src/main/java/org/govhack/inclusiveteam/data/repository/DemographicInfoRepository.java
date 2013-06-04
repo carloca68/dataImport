@@ -45,9 +45,8 @@ import java.util.List;
 /**
  * The interface Demographic info repository.
  */
-public interface DemographicInfoRepository extends JpaRepository<DemographicInfo, Long> {
+public interface DemographicInfoRepository extends JpaRepository<DemographicInfo, Long>, DemographicInfoRepositoryCustom {
 
-    List<DemographicInfo> findBySource_YearAndCountryName(Long year, String name);
+     List<DemographicInfo> findBySource_YearAndState_Name(Long year, String name);
 
-    List<DemographicInfo> findBySource_YearAndState_Name(Long year, String name);
 }

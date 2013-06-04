@@ -35,7 +35,7 @@
  * /
  */
 
-package org.govhack.inclusiveteam.data.services;
+package org.govhack.inclusiveteam.data.services.file;
 
 import au.com.bytecode.opencsv.CSVReader;
 import org.govhack.inclusiveteam.data.process.LineProcessor;

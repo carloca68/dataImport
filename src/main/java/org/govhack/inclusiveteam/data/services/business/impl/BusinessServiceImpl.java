@@ -35,7 +35,30 @@
  * /
  */
 
-package org.govhack.inclusiveteam.data.services;
+package org.govhack.inclusiveteam.data.services.business.impl;
 
-public interface StatisticsService {
+import org.govhack.inclusiveteam.data.model.Statistics;
+import org.govhack.inclusiveteam.data.repository.DemographicInfoRepository;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.List;
+
+/**
+ * The type Business service impl.
+ */
+
+@Service
+public class BusinessServiceImpl implements org.govhack.inclusiveteam.data.services.business.BusinessService {
+
+    private static final int MAX_SIZE = 10;
+
+    @Inject
+    private DemographicInfoRepository repository;
+
+    @Override
+    public List<Statistics> calculateByYear(Long year){
+        return repository.calculateByYear(year, MAX_SIZE);
+    }
+
 }

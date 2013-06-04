@@ -34,30 +34,25 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.repository;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+import org.govhack.inclusiveteam.data.model.Statistics;
+import org.springframework.transaction.annotation.Transactional;
 
-public class CensusLineProcessorTest {
+import java.util.List;
 
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
+/**
+ * The interface Demographic info repository custom.
+ */
+public interface DemographicInfoRepositoryCustom {
 
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
-
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
-    }
+    /**
+     * Select by year.
+     *
+     * @param year the year
+     * @return the list
+     */
+    @Transactional(readOnly = true)
+    List<Statistics> calculateByYear(Long year, int maxSize);
 }

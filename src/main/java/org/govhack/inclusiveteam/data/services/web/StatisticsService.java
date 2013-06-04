@@ -34,30 +34,37 @@
  *
  * /
  */
-package org.govhack.inclusiveteam.data.process;
 
-import org.govhack.inclusiveteam.data.services.file.CSVReaderService;
-import org.junit.Test;
+package org.govhack.inclusiveteam.data.services.web;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Set;
+import org.govhack.inclusiveteam.data.model.Statistics;
+import org.govhack.inclusiveteam.data.services.business.BusinessService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-public class CensusLineProcessorTest {
+import javax.inject.Inject;
 
-    private LineProcessor lineProcessor;
-    private CSVReaderService csvReaderService;
+/**
+ * The type Statistics service.
+ */
+@Controller()
+public class StatisticsService {
 
-    @Test
-    public void readFileTest() throws FileNotFoundException {
-        lineProcessor = new CensusLineProcessor(0);
-        csvReaderService = new CSVReaderService("./data/input/20680-b10-Australia (Australia).csv", ',', '"',  0, 17, 34, lineProcessor);
-        csvReaderService.readFile();
+    @Inject
+    private BusinessService businessService;
 
-        Map<String, String[]> data = lineProcessor.getData();
-        Set<String> keys = data.keySet();
-        for (String key : keys){
-            System.out.println(key + " - " + data.get(key)[11]);
-        }
+    /**
+     * Gets templates.
+     *
+     * @return the templates
+     */
+    @RequestMapping(value = "/stats/{year}", method = RequestMethod.GET)
+    @ResponseBody
+    public java.util.List<Statistics> getTemplates(@PathVariable Long year) {
+        return businessService.calculateByYear(year);
     }
+
 }
